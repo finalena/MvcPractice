@@ -59,5 +59,9 @@ namespace MvcPractice.Models
         [DisplayName("註冊時間")]
         public DateTime RegisterOn { get; set; }
 
+        [DisplayName("會員啟用認證碼")]
+        [MaxLength(36)]
+        [Description("當AutoCode = null代表會員通過Email驗證")]
+        public string AutoCode { get; set; }
     }
 }
