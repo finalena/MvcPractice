@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Data.Linq;
 using System.Web.Security;
 
 namespace MvcPractice.Controllers
@@ -16,9 +17,9 @@ namespace MvcPractice.Controllers
         //顯示會員資料
         public ActionResult Index(Member member)
         {
-            return View();
+            return View(member);
         }
-
+        
         //更新會員基本資料
         [HttpPost]
         public ActionResult Update([Bind(Exclude = "Password,RegisterOn")] Member member)
@@ -34,17 +35,36 @@ namespace MvcPractice.Controllers
             return View();
         }
 
-        //更新會員密碼
-        [HttpPost]
-        public ActionResult UpdatePassword(string email, string password)
+        //顯示會員更新密碼頁面
+        public ActionResult UpdatePassword()
         {
-            if (ModelState.IsValid)
-            {
-
-                return RedirectToAction("Index");
-            }
 
             return View();
+        }
+
+        //更新會員密碼
+        [HttpPost]
+        public ActionResult UpdatePassword(string newPassword, string password)
+        {
+            var member = db.Members.Where(p => p.Email == User.Identity.Name).FirstOrDefault();
+
+            if (member == null) return RedirectToAction("Login", "Member");
+            //TODO: 驗證舊密碼
+            if (member.Password != password) ModelState.AddModelError("Password", "舊密碼輸入錯誤");
+
+            //TODO: 密碼加密
+            member.Password = newPassword;
+
+            if (ModelState.IsValid && TryUpdateModel<Member>(member, new string[] { "Password" }))
+            {
+                db.SaveChanges();
+                return RedirectToAction("Index", "Member");
+            }
+            else
+            {
+                return View(member);
+            }
+            
         }
 
         //會員註冊畫面

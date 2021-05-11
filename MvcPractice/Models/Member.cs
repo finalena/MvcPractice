@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -24,6 +25,12 @@ namespace MvcPractice.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [NotMapped]
+        [DisplayName("確認密碼")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "密碼與確認密碼不符")]
+        public string ConfirmPassword { get; set; }
+
         [DisplayName("姓名")]
         [Required(ErrorMessage = "請輸入姓名")]
         [MaxLength(10, ErrorMessage = "姓名長度不可超過10個字")]
@@ -40,6 +47,7 @@ namespace MvcPractice.Models
         [DisplayName("出生日期")]
         [Required(ErrorMessage = "請輸入出生日期")]
         [DataType(DataType.Date)]
+        [Range(typeof(DateTime), "1921/01/01", "2011/12/31")]
         public DateTime Birthday { get; set; }
 
         [DisplayName("電話號碼")]
