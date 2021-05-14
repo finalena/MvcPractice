@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Mvc;
 using System.Web;
 
 namespace MvcPractice.Models
@@ -28,7 +29,7 @@ namespace MvcPractice.Models
         [NotMapped]
         [DisplayName("確認密碼")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "密碼與確認密碼不符")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密碼與確認密碼不符!")]
         public string ConfirmPassword { get; set; }
 
         [DisplayName("姓名")]
@@ -42,12 +43,13 @@ namespace MvcPractice.Models
 
         [DisplayName("性別")]
         [Required(ErrorMessage = "請選擇性別")]
-        public int Sex { get; set; }
+        public string Sex { get; set; }
+        public IEnumerable<SelectListItem> SexItems { get; set; }
 
         [DisplayName("出生日期")]
         [Required(ErrorMessage = "請輸入出生日期")]
         [DataType(DataType.Date)]
-        [Range(typeof(DateTime), "1921/01/01", "2011/12/31")]
+        //TODO: [Range(typeof(DateTime), "1921/01/01", "2011/12/31")]
         public DateTime Birthday { get; set; }
 
         [DisplayName("電話號碼")]

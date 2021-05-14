@@ -137,6 +137,10 @@
     <Compile Include="Migrations\202104270246414_Initial.Designer.cs">
       <DependentUpon>202104270246414_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105140422398_UpdateMember.cs" />
+    <Compile Include="Migrations\202105140422398_UpdateMember.Designer.cs">
+      <DependentUpon>202105140422398_UpdateMember.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\MvcPracticeContext.cs" />
@@ -207,6 +211,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202104270246414_Initial.resx">
       <DependentUpon>202104270246414_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105140422398_UpdateMember.resx">
+      <DependentUpon>202105140422398_UpdateMember.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

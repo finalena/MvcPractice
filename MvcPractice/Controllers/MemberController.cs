@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
-using System.Data.Linq;
 using System.Web.Security;
 
 namespace MvcPractice.Controllers
@@ -13,26 +12,37 @@ namespace MvcPractice.Controllers
     public class MemberController : Controller
     {
         MvcPracticeContext db = new MvcPracticeContext();
-
+     
         //顯示會員資料
         public ActionResult Index(Member member)
         {
+            member.SexItems = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "男", Value = "Male"},
+                new SelectListItem() { Text = "女", Value = "Female" }
+            };
+         
+
             return View(member);
         }
         
         //更新會員基本資料
         [HttpPost]
-        public ActionResult Update([Bind(Exclude = "Password,RegisterOn")] Member member)
+        public ActionResult Update(Member NewMember, string sex)
         {
-            
-            if (ModelState.IsValid)
+            var member = db.Members.Where(p => p.Email == User.Identity.Name).FirstOrDefault();
+            if (member == null) return RedirectToAction("Login", "Member");
+
+            if (ModelState.IsValid && TryUpdateModel<Member>(member, new string[] 
+                    { "Name", "NickName", "Sex", "Birthday", "Phone", "Location", "Profile"}))
             {
-                db.Entry(member).State = EntityState.Modified;
                 db.SaveChanges();
-
+                return RedirectToAction("Index", "Member");
             }
-
-            return View();
+            else
+            {
+                return View(NewMember);
+            }
         }
 
         //顯示會員更新密碼頁面
@@ -47,7 +57,6 @@ namespace MvcPractice.Controllers
         public ActionResult UpdatePassword(string newPassword, string password)
         {
             var member = db.Members.Where(p => p.Email == User.Identity.Name).FirstOrDefault();
-
             if (member == null) return RedirectToAction("Login", "Member");
             //TODO: 驗證舊密碼
             if (member.Password != password) ModelState.AddModelError("Password", "舊密碼輸入錯誤");
