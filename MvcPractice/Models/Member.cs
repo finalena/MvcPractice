@@ -22,15 +22,9 @@ namespace MvcPractice.Models
 
         [DisplayName("密碼")]
         [Required(ErrorMessage = "請輸入密碼")]
-        [MaxLength(20, ErrorMessage = "密碼長度不可超過20個字")]
+        [MaxLength(100)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        [NotMapped]
-        [DisplayName("確認密碼")]
-        [DataType(DataType.Password)]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密碼與確認密碼不符!")]
-        public string ConfirmPassword { get; set; }
 
         [DisplayName("姓名")]
         [Required(ErrorMessage = "請輸入姓名")]
@@ -43,8 +37,8 @@ namespace MvcPractice.Models
 
         [DisplayName("性別")]
         [Required(ErrorMessage = "請選擇性別")]
-        public string Sex { get; set; }
-        public IEnumerable<SelectListItem> SexItems { get; set; }
+        [MaxLength(5)]
+        public string Gender { get; set; }
 
         [DisplayName("出生日期")]
         [Required(ErrorMessage = "請輸入出生日期")]
@@ -71,7 +65,14 @@ namespace MvcPractice.Models
 
         [DisplayName("會員啟用認證碼")]
         [MaxLength(36)]
-        [Description("當AutoCode = null代表會員通過Email驗證")]
-        public string AutoCode { get; set; }
+        [Description("AuthCode = null代表會員通過Email驗證")]
+        public string AuthCode { get; set; }
+    }
+
+    public enum GenderType
+    {
+        男,
+        女,
+        其他
     }
 }

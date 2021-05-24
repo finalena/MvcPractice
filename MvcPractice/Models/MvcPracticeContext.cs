@@ -3,6 +3,8 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using System.Text;
+    using System.Data.Entity.Validation;
 
     public class MvcPracticeContext : DbContext
     {
@@ -21,5 +23,30 @@
         // Code First 模型的詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=390109。
 
          public virtual DbSet<Member> Members { get; set; }
+
+       
+        public override int SaveChanges()
+        {
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbEntityValidationException exception)
+            {
+                var sb = new StringBuilder();
+                foreach (var failure in exception.EntityValidationErrors)
+                {
+                    sb.AppendFormat("{0} failed validation\n", failure.Entry.Entity.GetType());
+                    foreach (var error in failure.ValidationErrors)
+                    {
+                        sb.AppendFormat("- {0} : {1}", error.PropertyName, error.ErrorMessage);
+                        sb.AppendLine();
+                    }
+                }
+                throw new DbEntityValidationException(
+                    "Entity Validation Failed - errors follow:\n" +
+                    sb.ToString(), exception);
+            }
+        }
     }
 }
