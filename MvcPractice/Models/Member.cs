@@ -12,6 +12,7 @@ namespace MvcPractice.Models
     [DisplayName("會員訊息")]
     public class Member
     {
+        //Test
         public int Id { get; set; }
 
         [DisplayName("電子郵件")]
